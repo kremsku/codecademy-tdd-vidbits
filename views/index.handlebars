@@ -1,0 +1,16 @@
+<div id="navigation">
+    <a href="/videos/create">
+        <div class="create-button">
+            <p>Create a new video</p>
+        </div>
+    </a>
+</div>
+<div id="videos-container">
+    {{#each videos as |video|}}
+    <div class="video-card">
+        <div class="video-title">
+            {{video.title}}
+        </div>
+    </div>
+    {{/each}}
+</div>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VidBits - Save a video</title>
+    <link rel="icon" type="../image/ico" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+    <link rel='stylesheet' href='../stylesheets/style.css'>
+</head>
+
+<div class="contents-container">
+    <h1>Save a video</h1>
+    <form class="input-form" action="/videos" method="post">
+        <label class="form-label" for="title">Title</label>
+        <input id="title-input" name="title" maxlength="50" value="{{newItem.title}}" />
+        {{#with newItem.errors.title as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+        <br>
+
+        <label class="form-label" for="description">Description</label>
+        <textarea id="description-input" name="description">{{newItem.description}}</textarea>
+        {{#with newItem.errors.description as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+
+        <div class="form-navigation">
+            <a href="/">
+                <p>Go back</p>
+            </a>
+            <button class="button submit-button" id="submit-button" type="submit">
+                <p>Create new</p>
+            </button>
+        </div>
+    </form>
+</div>
+
+</html>
