@@ -40,7 +40,7 @@ describe('Video routes', () => {
 
         it('should return the video details', async () => {
             const newVideo = {
-                title: "Best title ever",
+                title: "Best video detail title ever",
                 description: "This is the greatest cat video of all time!!!"
             }
             const response = await request(app)
@@ -62,9 +62,9 @@ describe('Video routes', () => {
                 .type('form')
                 .send(newVideo);
 
-                const videos = await Video.find({});
+            const videos = await Video.find({});
 
-                assert.equal(videos.length, 0);
+            assert.equal(videos.length, 0);
         });
 
         it('should return 400 without title', async () => {
@@ -119,7 +119,7 @@ describe('Video routes', () => {
     describe('GET /videos', () => {
         it('/videos/:id renders the Video', async () => {
             const newVideo = {
-                title: "Best title ever",
+                title: "Best get /videos/:id title ever",
                 description: "This is the greatest cat video of all time!!!"
             };
 
@@ -129,11 +129,11 @@ describe('Video routes', () => {
                 .send(newVideo);
 
             const video = await Video.findOne({});
-            console.log("video: ", video);
+
             const response = await request(app)
                 .get(`/videos/${video._id}`);
-            
-            // assert.include(response.text, video.title);
+
+            assert.include(response.text, video._doc.title);
         });
     });
 });

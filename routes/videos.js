@@ -12,9 +12,8 @@ router.get('/videos', async (req, res, next) => {
 });
 
 router.get('/videos/:id', async (req, res, next) => {
-  console.log("req.params: ", req.params);
   videoId = req.params.id;
-  const video = await Video.find({_id: videoId});
+  const video = await Video.findOne({_id: videoId});
   res.status(200).render('show', {video: video});
 });
 
