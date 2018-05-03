@@ -23,7 +23,6 @@ router.get('/videos/:id', async (req, res, next) => {
     const video = await Video.findOne({_id: videoId});
     res.status(200).render('show', {video: video});
   } else {
-    console.log("NOT A VALID OBJECTID: ", videoId);
     res.status(200).render('index');
   }
   

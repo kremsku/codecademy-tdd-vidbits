@@ -17,7 +17,8 @@ describe('Video routes', () => {
             
             const newVideo = {
                 title: "Best index-test title ever",
-                description: "This is the greatest cat video of all time!!!"
+                description: "This is the greatest cat video of all time!!!",
+                url: "someUrl.com"
             }
             const response = await request(app)
                 .post('/videos')

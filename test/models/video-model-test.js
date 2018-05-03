@@ -5,7 +5,7 @@ const Video = require('../../models/video');
 beforeEach(connectDatabase);
 afterEach(disconnectDatabase);
 
-describe('Video test', () => {
+describe('Video model test', () => {
 
   beforeEach(connectDatabase);
 
@@ -19,6 +19,12 @@ describe('Video test', () => {
       }
 
       const video = new Video(newVideo);
+      const errors = video.validateSync();
+      // console.log('\n');
+      // console.log('\n');
+      // console.log("errors: ", errors);
+      // console.log('\n');
+      // console.log('\n');
       assert.strictEqual(video.title, newVideo.title.toString());
 
     });
@@ -27,7 +33,7 @@ describe('Video test', () => {
       const newVideo = {
         title: 25,
         description: "This is the greatest cat video of all time!!!",
-        url: "https://www.youtube.com/watch?v=_w9S7uTkTsE"
+        url: false
       }
 
       const video = new Video(newVideo);
@@ -35,7 +41,5 @@ describe('Video test', () => {
 
     });
 
-    // it('renders all items from the database', async () => {
-    // });
   });
 }); 
