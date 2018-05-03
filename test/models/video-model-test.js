@@ -41,5 +41,17 @@ describe('Video model test', () => {
 
     });
 
+    it('#url is required', async () => {
+      const newVideo = {
+        title: 25,
+        description: "This is the greatest cat video of all time!!!"
+      }
+
+      const video = new Video(newVideo);
+      const errors = video.validateSync();
+
+      assert.equal(video.errors.url.message, 'a URL is required');
+    });
+
   });
 }); 

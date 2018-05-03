@@ -95,7 +95,7 @@ describe('Video routes', () => {
                 .type('form')
                 .send(newVideo);
 
-            assert.include(response.text, 'Path &#x60;url&#x60; is required');
+            assert.include(response.text, 'a URL is required');
         });
 
         it('should render rest of video item without title', async () => {
@@ -110,6 +110,48 @@ describe('Video routes', () => {
 
             assert.include(response.text, newVideo.description);
             assert.include(response.text, newVideo.url);
+        });
+
+    });
+
+    describe('POST /videos/:id/updates', () => {
+        it('updates the record', async () => {
+            const newVideo = {
+                title: 'Video update title',
+                description: 'This is the greatest cat video of all time!!!',
+                url: generateRandomUrl('youtube.com')
+            }
+            const response = await request(app)
+                .post('/videos')
+                .type('form')
+                .send(newVideo);
+
+            // assert.include(response.text, newVideo.title);
+            let videoId = response.headers.location.split('/')[1];
+
+            editedVideo = {
+                title: 'Really cool updated title',
+                description: newVideo.description,
+                url: newVideo.url,
+                videoid: videoId
+            };
+
+            // console.log("response: ", response);
+            const editResponse = await request(app)
+            .post('/updates')
+            .type('form')
+            .send(editedVideo);
+            // console.log("editResponse.text: ", editResponse.text);
+
+            assert.equal(editResponse.status, 302);
+            assert.equal(editResponse.headers.location, 'videos/' + videoId);
+
+            const getResponse = await request(app)
+            .get('/videos/' + videoId);
+            // console.log("getResponse.text: ", getResponse.text);
+
+            assert.include(getResponse.text, editedVideo.title);
+            assert.notInclude(getResponse.text, newVideo.title);
         });
     });
 
@@ -130,6 +172,27 @@ describe('Video routes', () => {
 
             const getResponse = await request(app)
                 .get(`/videos/${video._id}`);
+
+            assert.include(getResponse.text, newVideo.url);
+            assert.include(getResponse.text, video._doc.title);
+        });
+
+        it('/videos/:id/edit renders the Video create page', async () => {
+            // Setup
+            const newVideo = {
+                title: 'Best get /videos/:id title ever',
+                description: 'This is the greatest cat video of all time!!!',
+                url: generateRandomUrl('youtube.com')
+            };
+
+            const sendReponse = await request(app)
+                .post('/videos')
+                .type('form')
+                .send(newVideo);
+
+            const video = await Video.findOne({});
+
+            const getResponse =  await request(app).get(`/videos/${video._id}/edit`);
 
             assert.include(getResponse.text, newVideo.url);
             assert.include(getResponse.text, video._doc.title);

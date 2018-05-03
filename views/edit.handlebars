@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VidBits - Edit a video</title>
+    <link rel="icon" type="../image/ico" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+    <link rel='stylesheet' href='../stylesheets/style.css'>
+</head>
+
+<div class="contents-container">
+    <h1>Edit a video</h1>
+    <form class="input-form" action="/updates" method="post">
+        <input id="videoid" type="hidden" value="{{video._id}}" name="videoid" />
+        <label class="form-label" for="title">Title</label>
+        <input id="title-input" name="title" maxlength="50" value="{{video.title}}" />
+        {{#with video.errors.title as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+        <br>
+
+        <label class="form-label" for="description">Description</label>
+        <textarea id="description-input" name="description">{{video.description}}</textarea>
+        {{#with video.errors.description as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+
+        <label class="form-label" for="url">URL</label>
+        <input id="url-input" name="url" maxlength="50" value="{{video.url}}" />
+        {{#with video.errors.url as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+
+        <div class="form-navigation">
+            <a href="/">
+                <p>Go back</p>
+            </a>
+            <button class="button submit-button" id="submit-button" type="submit">
+                <p>Save!</p>
+            </button>
+        </div>
+    </form>
+</div>
+
+</html>

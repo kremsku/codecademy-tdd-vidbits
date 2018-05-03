@@ -1,7 +1,7 @@
 
 const router = require('express').Router();
 const Video = require('../models/video');
-const {mongoose} = require('../database');
+const { mongoose } = require('../database');
 
 router.get('/', async (req, res, next) => {
   res.status(302).redirect('videos');
@@ -9,35 +9,66 @@ router.get('/', async (req, res, next) => {
 
 router.get('/videos', async (req, res, next) => {
   const videos = await Video.find({});
-  res.status(200).render('index', {videos: videos});
+  res.status(200).render('index', { videos: videos });
 });
 
 router.get('/videos/create', async (req, res, next) => {
-  res.status(200).render('create', {newItem: {}});
+  res.status(200).render('create', { newItem: {} });
 });
+
 
 router.get('/videos/:id', async (req, res, next) => {
   videoId = req.params.id;
-
   if (mongoose.Types.ObjectId.isValid(videoId)) {
-    const video = await Video.findOne({_id: videoId});
-    res.status(200).render('show', {video: video});
+    const video = await Video.findOne({ _id: videoId });
+    res.status(200).render('show', { video: video });
   } else {
     res.status(200).render('index');
   }
-  
 });
 
+router.get('/videos/:id/edit', async (req, res, next) => {
+  videoId = req.params.id;
+
+  const video = await Video.findOne({ _id: videoId });
+  res.status(200).render('edit', { video: video });
+});
+
+
 router.post('/videos', async (req, res, next) => {
-  const {title, description, url} = req.body;
-  const newItem = new Video({title, description, url});
+  const { title, description, url } = req.body;
+  const newItem = new Video({ title, description, url });
   newItem.validateSync();
   if (newItem.errors) {
     // console.log("newItem.errors: ", newItem.errors);
-    res.status(400).render('create', {newItem: newItem});
+    res.status(400).render('create', { newItem: newItem });
   } else {
     await newItem.save();
     res.status(301).redirect(`videos/${newItem._id}`);
+  }
+});
+
+router.post('/updates', async (req, res, next) => {
+  // videoId = req.params.id;
+  const { title, description, url, videoid } = req.body;
+
+  console.log("videoid: ", videoid);
+
+  if (!videoid) {
+    res.status(400).render('edit', { video: {} });
+  } else {
+    const video = new Video({ title, description, url });
+    // newItem.validateSync();
+    if (video.errors) {
+      // console.log("newItem.errors: ", newItem.errors);
+      res.status(400).render('edit', { video: video });
+    } else {
+
+      const updatedVideo = await Video.findByIdAndUpdate(videoid, { $set: { title: title, description: description, url: url }}, { new: true });
+      // console.log("updatedVideo: ", updatedVideo);
+  
+      res.status(302).redirect(`videos/${videoid}`);
+    }
   }
 
 });
