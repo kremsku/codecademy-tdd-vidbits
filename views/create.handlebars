@@ -24,6 +24,12 @@
             <span class="error">{{error.message}}</span>
         {{/with}}
 
+        <label class="form-label" for="url">URL</label>
+        <input id="url-input" name="url" maxlength="50" value="{{newItem.url}}" />
+        {{#with newItem.errors.url as |error|}}
+            <span class="error">{{error.message}}</span>
+        {{/with}}
+
         <div class="form-navigation">
             <a href="/">
                 <p>Go back</p>

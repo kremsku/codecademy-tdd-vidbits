@@ -12,20 +12,12 @@ describe('Video routes', () => {
 
     afterEach(disconnectDatabase);
 
-    // describe('POST to /videos', () => {
-    //     it('should return 201', async () => {
-    //         const response = await request(app)
-    //             .post('/videos')
-    //             .send();
-
-    //         assert.equal(response.status, 201);
-    //     });
-    // });
     describe('POST /videos', () => {
-        it('posts a new video title and description', async () => {
+        it('saves a Video document', async () => {
             const newVideo = {
                 title: "Best title ever",
-                description: "This is the greatest cat video of all time!!!"
+                description: "This is the greatest cat video of all time!!!",
+                url: "https://www.youtube.com/watch?v=xyJZH2UPifo"
             }
             const response = await request(app)
                 .post('/videos')
@@ -33,24 +25,9 @@ describe('Video routes', () => {
                 .send(newVideo);
 
             const videoFromDatabase = await Video.findOne({});
-            // console.log("videoFromDatabase: ", videoFromDatabase);
             assert.equal(videoFromDatabase.title, newVideo.title);
             assert.equal(videoFromDatabase.description, newVideo.description);
-        });
-
-        it('should return the video details', async () => {
-            const newVideo = {
-                title: "Best video detail title ever",
-                description: "This is the greatest cat video of all time!!!"
-            }
-            const response = await request(app)
-                .post('/videos')
-                .type('form')
-                .send(newVideo);
-
-            // console.log("response.body: ", response.body);
-            assert.equal(response.body.title, newVideo.title);
-            assert.equal(response.body.description, newVideo.description);
+            assert.equal(videoFromDatabase.url, newVideo.url);
         });
 
         it('should not save without title', async () => {

@@ -9,7 +9,10 @@
     {{#each videos as |video|}}
     <div class="video-card">
         <div class="video-title">
-            {{video.title}}
+            <a href="/videos/{{video._id}}">{{video.title}}</a>
+        </div>
+        <div>
+            <iframe class="video-player" src="{{video.url}}" name="{{video.title}}" frameborder="0"></iframe>
         </div>
     </div>
     {{/each}}

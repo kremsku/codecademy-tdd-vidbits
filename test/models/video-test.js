@@ -23,6 +23,18 @@ describe('Video test', () => {
 
     });
 
+    it('#url is a String', async () => {
+      const newVideo = {
+        title: 25,
+        description: "This is the greatest cat video of all time!!!",
+        url: "https://www.youtube.com/watch?v=_w9S7uTkTsE"
+      }
+
+      const video = new Video(newVideo);
+      assert.strictEqual(video.url, newVideo.url.toString());
+
+    });
+
     // it('renders all items from the database', async () => {
     // });
   });
