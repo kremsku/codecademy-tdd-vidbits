@@ -7,13 +7,13 @@ const { parseTextFromHTML } = require('../test-utils');
 
 const app = require('../../app');
 
-describe('Video routes', () => {
+describe('Index routes', () => {
 
     beforeEach(connectDatabase);
     afterEach(disconnectDatabase);
 
-    describe('POST item and GET index', () => {
-        it('should post a new item and check it exists', async () => {
+    describe('POST a new item and GET index', () => {
+        it('should post a new item and get redirected to video detail page', async () => {
             
             const newVideo = {
                 title: "Best index-test title ever",
@@ -26,7 +26,7 @@ describe('Video routes', () => {
                 .send(newVideo);
 
             assert.equal(response.statusCode, 302);
-            // assert.include(parseTextFromHTML(response.text, 'body'), newVideo.title);
+            assert.include(response.headers.location, 'videos/');
         });
 
     });

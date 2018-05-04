@@ -1,8 +1,8 @@
 const {assert} = require('chai');
 
-describe('User updating video', () => {
+describe('User updates video', () => {
     describe('editing a video', () => {
-      it('changes the values', () => {
+      it('it should change the values', () => {
         const newVideo = {
             title: "This is the greatest cat video of all time!!!",
             description: "Wow, such description. Much information.",
@@ -25,7 +25,7 @@ describe('User updating video', () => {
         assert.include(browser.getText('body'), newTitle);
       });
 
-      it('does not create a new video', () => {
+      it('should not create a new video', () => {
         const newVideo = {
             title: "This is the greatest cat video of all time!!!",
             description: "Wow, such description. Much information.",

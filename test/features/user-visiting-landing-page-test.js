@@ -29,7 +29,7 @@ describe('User visits landing page', () => {
       assert.include(browser.getText('body'), 'Save a video');
     });
   });
-  describe('WITH existing video', () => {
+  describe('with existing video', () => {
     it('should render existing videos', async () => {
 
       const newVideo = {
@@ -45,7 +45,6 @@ describe('User visits landing page', () => {
       clickLink('#submit-button');
 
       browser.url('/');
-      // console.log("browser.getSource(): ", browser.getSource());
       assert.include(browser.getText('body'), newVideo.title);
     });
 
@@ -63,12 +62,11 @@ describe('User visits landing page', () => {
       clickLink('#submit-button');
 
       browser.url('/');
-      // console.log("browser.getSource(): ", browser.getSource());
       var iframe = browser.getHTML('iframe');
       assert.include(iframe, newVideo.url);
     });
 
-    it('can navigate to video page', async () => {
+    it('should be able to navigate to video page', async () => {
       const newVideo = {
         title: "Best clickable title ever...",
         description: "Just a description",
@@ -82,7 +80,6 @@ describe('User visits landing page', () => {
       clickLink('#submit-button');
 
       clickLink('.video-title');
-      // console.log("browser.getSource(): ", browser.getSource());
       const title = browser.getText('.video-title');
 
       assert.include(browser.getUrl(), 'http://localhost:8001/videos/');

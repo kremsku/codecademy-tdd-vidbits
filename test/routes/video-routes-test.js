@@ -18,7 +18,7 @@ describe('Video routes', () => {
     afterEach(disconnectDatabase);
 
     describe('POST /videos', () => {
-        it('saves a Video document', async () => {
+        it('should save a new Video document', async () => {
             const newVideo = {
                 title: 'Best title ever',
                 description: 'This is the greatest cat video of all time!!!',
@@ -115,7 +115,7 @@ describe('Video routes', () => {
     });
 
     describe('POST /videos/:id/updates', () => {
-        it('updates the record', async () => {
+        it('should update video record', async () => {
             const newVideo = {
                 title: 'Video update title',
                 description: 'This is the greatest cat video of all time!!!',
@@ -127,7 +127,6 @@ describe('Video routes', () => {
                 .type('form')
                 .send(newVideo);
 
-            // assert.include(response.text, newVideo.title);
             let videoId = response.headers.location.split('/')[1];
 
             editedVideo = {
@@ -137,25 +136,22 @@ describe('Video routes', () => {
                 videoid: videoId
             };
 
-            // console.log("response: ", response);
             const editResponse = await request(app)
             .post('/updates')
             .type('form')
             .send(editedVideo);
-            // console.log("editResponse.text: ", editResponse.text);
 
             assert.equal(editResponse.status, 302);
             assert.equal(editResponse.headers.location, 'videos/' + videoId);
 
             const getResponse = await request(app)
             .get('/videos/' + videoId);
-            // console.log("getResponse.text: ", getResponse.text);
 
             assert.include(getResponse.text, editedVideo.title);
             assert.notInclude(getResponse.text, newVideo.title);
         });
 
-        it('does not update invalid record', async () => {
+        it('should not update an invalid record', async () => {
             const newVideo = {
                 title: 'Video update title',
                 description: 'This is the greatest cat video of all time!!!',
@@ -167,7 +163,6 @@ describe('Video routes', () => {
                 .type('form')
                 .send(newVideo);
 
-            // assert.include(response.text, newVideo.title);
             let videoId = response.headers.location.split('/')[1];
 
             editedVideo = {
@@ -176,12 +171,10 @@ describe('Video routes', () => {
                 videoid: videoId
             };
 
-            // console.log("response: ", response);
             const editResponse = await request(app)
             .post('/updates')
             .type('form')
             .send(editedVideo);
-            // console.log("editResponse: ", editResponse);
 
             assert.equal(editResponse.status, 400);
             assert.include(editResponse.text, editedVideo.description);
@@ -191,7 +184,7 @@ describe('Video routes', () => {
     });
 
     describe('POST /videos/:id/deletions', () => {
-        it('removes the Video', async () => {
+        it('should remove the Video', async () => {
             const newVideo = {
                 title: 'Best get /videos/:id title ever',
                 description: 'This is the greatest cat video of all time!!!',
@@ -210,18 +203,14 @@ describe('Video routes', () => {
             .type('form')
             .send(  );
 
-            console.log("postResponse.text: ", postResponse.text);
-
             assert.equal(postResponse.status, 302);
             assert.equal(postResponse.headers.location, '/');
-            // assert.notInclude(postResponse.text, newVideo.url);
-            // assert.notInclude(postResponse.text, video._doc.title);
         });
 
     });
 
-    describe('GET /videos', () => {
-        it('/videos/:id renders the Video', async () => {
+    describe('GET /videos/:id', () => {
+        it('should render the Video', async () => {
             const newVideo = {
                 title: 'Best get /videos/:id title ever',
                 description: 'This is the greatest cat video of all time!!!',
@@ -241,11 +230,12 @@ describe('Video routes', () => {
             assert.include(getResponse.text, newVideo.url);
             assert.include(getResponse.text, video._doc.title);
         });
+    });
 
-        it('/videos/:id/edit renders the Video create page', async () => {
-            // Setup
+    describe('GET /videos/:id/edit', () => {
+        it('should render video edit page', async () => {
             const newVideo = {
-                title: 'Best get /videos/:id title ever',
+                title: 'Best get /videos/:id/edit title ever',
                 description: 'This is the greatest cat video of all time!!!',
                 url: generateRandomUrl('youtube.com')
             };

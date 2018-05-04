@@ -17,7 +17,6 @@ describe('User visits create a video page', () => {
 
         browser.url('/');
         assert.include(browser.getText('body'), newVideo.title);
-        // assert.include(browser.getText('body'), newVideo.description);
       });
     });
   });

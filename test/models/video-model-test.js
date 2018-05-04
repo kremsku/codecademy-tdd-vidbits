@@ -5,13 +5,13 @@ const Video = require('../../models/video');
 beforeEach(connectDatabase);
 afterEach(disconnectDatabase);
 
-describe('Video model test', () => {
+describe('Video model', () => {
 
   beforeEach(connectDatabase);
 
   afterEach(disconnectDatabase);
 
-  describe('Video model test', () => {
+  describe('new Video with model', () => {
     it('should have a string title', async () => {
       const newVideo = {
         title: 25,
@@ -20,16 +20,11 @@ describe('Video model test', () => {
 
       const video = new Video(newVideo);
       const errors = video.validateSync();
-      // console.log('\n');
-      // console.log('\n');
-      // console.log("errors: ", errors);
-      // console.log('\n');
-      // console.log('\n');
       assert.strictEqual(video.title, newVideo.title.toString());
 
     });
 
-    it('#url is a String', async () => {
+    it('should have a string url', async () => {
       const newVideo = {
         title: 25,
         description: "This is the greatest cat video of all time!!!",
@@ -41,7 +36,7 @@ describe('Video model test', () => {
 
     });
 
-    it('#url is required', async () => {
+    it('should have a mandatory url', async () => {
       const newVideo = {
         title: 25,
         description: "This is the greatest cat video of all time!!!"
