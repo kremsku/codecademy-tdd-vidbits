@@ -7,6 +7,24 @@ router.get('/', async (req, res, next) => {
   res.status(302).redirect('videos');
 });
 
+router.post('/videos/:id/deletions', async (req, res, next) => {
+  videoId = req.params.id;
+
+  if (!videoId) {
+    res.status(400).render('edit', { video: {} });
+  } else {
+    const deletedVideo = await Video.findOneAndRemove({ _id: videoId }, { remove: true });
+    if (deletedVideo.result.ok === 1) {
+      console.log("great success!");
+      res.status(302).redirect('/');
+    } else {
+      console.log("did not work");
+      res.status(400).render('/videos');
+    }
+  }
+
+});
+
 router.get('/videos', async (req, res, next) => {
   const videos = await Video.find({});
   res.status(200).render('index', { videos: videos });
@@ -52,21 +70,19 @@ router.post('/updates', async (req, res, next) => {
   // videoId = req.params.id;
   const { title, description, url, videoid } = req.body;
 
-  console.log("videoid: ", videoid);
-
   if (!videoid) {
     res.status(400).render('edit', { video: {} });
   } else {
     const video = new Video({ title, description, url });
-    // newItem.validateSync();
+    video.validateSync();
     if (video.errors) {
       // console.log("newItem.errors: ", newItem.errors);
       res.status(400).render('edit', { video: video });
     } else {
 
-      const updatedVideo = await Video.findByIdAndUpdate(videoid, { $set: { title: title, description: description, url: url }}, { new: true });
+      const updatedVideo = await Video.findByIdAndUpdate(videoid, { $set: { title: title, description: description, url: url } }, { new: true });
       // console.log("updatedVideo: ", updatedVideo);
-  
+
       res.status(302).redirect(`videos/${videoid}`);
     }
   }

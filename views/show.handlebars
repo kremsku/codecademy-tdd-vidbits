@@ -8,7 +8,13 @@
             {{video.description}}
         </div>
         <div>
-            <button id="edit" onclick="window.location.href = '/videos/{{video._id}}/edit'";>Edit<a href="/videos/{{video._id}}/edit"></a></button>
+            <button id="edit" onclick="window.location.href = '/videos/{{video._id}}/edit'" ;>Edit
+                <a href="/videos/{{video._id}}/edit"></a>
+            </button>
         </div>
+        <form method="post">
+            <button id="delete" type="submit" formaction="/videos/{{video._id}}/deletions" formmethod="POST">Delete</button>
+        </form>
+        
     </div>
 </div>

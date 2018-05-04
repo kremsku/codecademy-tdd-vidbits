@@ -120,7 +120,8 @@ describe('Video routes', () => {
                 title: 'Video update title',
                 description: 'This is the greatest cat video of all time!!!',
                 url: generateRandomUrl('youtube.com')
-            }
+            };
+
             const response = await request(app)
                 .post('/videos')
                 .type('form')
@@ -153,6 +154,70 @@ describe('Video routes', () => {
             assert.include(getResponse.text, editedVideo.title);
             assert.notInclude(getResponse.text, newVideo.title);
         });
+
+        it('does not update invalid record', async () => {
+            const newVideo = {
+                title: 'Video update title',
+                description: 'This is the greatest cat video of all time!!!',
+                url: generateRandomUrl('youtube.com')
+            };
+
+            const response = await request(app)
+                .post('/videos')
+                .type('form')
+                .send(newVideo);
+
+            // assert.include(response.text, newVideo.title);
+            let videoId = response.headers.location.split('/')[1];
+
+            editedVideo = {
+                title: 'Really cool updated title',
+                description: newVideo.description,
+                videoid: videoId
+            };
+
+            // console.log("response: ", response);
+            const editResponse = await request(app)
+            .post('/updates')
+            .type('form')
+            .send(editedVideo);
+            // console.log("editResponse: ", editResponse);
+
+            assert.equal(editResponse.status, 400);
+            assert.include(editResponse.text, editedVideo.description);
+            assert.include(editResponse.text, editedVideo.title);
+            assert.include(editResponse.text, 'VidBits - Edit a video');
+        });
+    });
+
+    describe('POST /videos/:id/deletions', () => {
+        it('removes the Video', async () => {
+            const newVideo = {
+                title: 'Best get /videos/:id title ever',
+                description: 'This is the greatest cat video of all time!!!',
+                url: generateRandomUrl('youtube.com')
+            };
+
+            const sendReponse = await request(app)
+                .post('/videos')
+                .type('form')
+                .send(newVideo);
+
+            const video = await Video.findOne({});
+
+            const postResponse = await request(app)
+            .post(`/videos/${video._id}/deletions`)
+            .type('form')
+            .send(  );
+
+            console.log("postResponse.text: ", postResponse.text);
+
+            assert.equal(postResponse.status, 302);
+            assert.equal(postResponse.headers.location, '/');
+            // assert.notInclude(postResponse.text, newVideo.url);
+            // assert.notInclude(postResponse.text, video._doc.title);
+        });
+
     });
 
     describe('GET /videos', () => {
