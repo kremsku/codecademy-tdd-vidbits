@@ -3,11 +3,11 @@ const router = require('express').Router();
 const Video = require('../models/video');
 const { mongoose } = require('../database');
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.status(302).redirect('videos');
 });
 
-router.post('/videos/:id/deletions', async (req, res, next) => {
+router.post('/videos/:id/deletions', async (req, res) => {
   const videoId = req.params.id
 
   if (!videoId) {
@@ -23,17 +23,17 @@ router.post('/videos/:id/deletions', async (req, res, next) => {
 
 });
 
-router.get('/videos', async (req, res, next) => {
+router.get('/videos', async (req, res) => {
   const videos = await Video.find({});
   res.status(200).render('index', { videos: videos });
 });
 
-router.get('/videos/create', (req, res, next) => {
+router.get('/videos/create', (req, res) => {
   res.status(200).render('create', { newItem: {} });
 });
 
 
-router.get('/videos/:id', async (req, res, next) => {
+router.get('/videos/:id', async (req, res) => {
   const videoId = req.params.id
   if (mongoose.Types.ObjectId.isValid(videoId)) {
     const video = await Video.findOne({ _id: videoId });
@@ -43,7 +43,7 @@ router.get('/videos/:id', async (req, res, next) => {
   }
 });
 
-router.get('/videos/:id/edit', async (req, res, next) => {
+router.get('/videos/:id/edit', async (req, res) => {
   const videoId = req.params.id
 
   const video = await Video.findOne({ _id: videoId });
@@ -51,7 +51,7 @@ router.get('/videos/:id/edit', async (req, res, next) => {
 });
 
 
-router.post('/videos', async (req, res, next) => {
+router.post('/videos', async (req, res) => {
   const { title, description, url } = req.body;
   const newItem = new Video({ title, description, url });
   newItem.validateSync();
@@ -63,7 +63,7 @@ router.post('/videos', async (req, res, next) => {
   }
 });
 
-router.post('/updates', async (req, res, next) => {
+router.post('/updates', async (req, res) => {
   const { title, description, url, videoid } = req.body;
 
   if (!videoid) {
