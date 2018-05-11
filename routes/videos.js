@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/videos/:id/deletions', async (req, res, next) => {
-  videoId = req.params.id;
+  const videoId = req.params.id
 
   if (!videoId) {
     res.status(400).render('edit', { video: {} });
@@ -34,7 +34,7 @@ router.get('/videos/create', (req, res, next) => {
 
 
 router.get('/videos/:id', async (req, res, next) => {
-  videoId = req.params.id;
+  const videoId = req.params.id
   if (mongoose.Types.ObjectId.isValid(videoId)) {
     const video = await Video.findOne({ _id: videoId });
     res.status(200).render('show', { video: video });
@@ -44,7 +44,7 @@ router.get('/videos/:id', async (req, res, next) => {
 });
 
 router.get('/videos/:id/edit', async (req, res, next) => {
-  videoId = req.params.id;
+  const videoId = req.params.id
 
   const video = await Video.findOne({ _id: videoId });
   res.status(200).render('edit', { video: video });
