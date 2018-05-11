@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Video = require('../models/video');
 const { mongoose } = require('../database');
 
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
   res.status(302).redirect('videos');
 });
 
@@ -28,7 +28,7 @@ router.get('/videos', async (req, res, next) => {
   res.status(200).render('index', { videos: videos });
 });
 
-router.get('/videos/create', async (req, res, next) => {
+router.get('/videos/create', (req, res, next) => {
   res.status(200).render('create', { newItem: {} });
 });
 
